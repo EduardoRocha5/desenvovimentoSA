@@ -1,6 +1,5 @@
 package com.projeto.gerfuncionario.service;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,26 +7,18 @@ import org.springframework.stereotype.Service;
 
 import com.projeto.gerfuncionario.model.Projeto;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-
 import com.projeto.gerfuncionario.repository.ProjetoRepository;
 
 @Service
 public class ProjetoService {
 
-
     @Autowired
     private ProjetoRepository projetoRepository;
 
-
-
-    //cada porjeto com seu status
+    // cada porjeto com seu status
     public String stsProjeto(String nomeProjeto) {
 
         List<Projeto> projetos = projetoRepository.findBynmProjeto(nomeProjeto);
-
         if (projetos.isEmpty()) {
             return "Projeto não encontrado.";
         }
@@ -61,6 +52,5 @@ public class ProjetoService {
             return "Nenhum projeto encontrado.";
         return qtd + " projeto(s) excluído(s).";
     }
-
 
 }

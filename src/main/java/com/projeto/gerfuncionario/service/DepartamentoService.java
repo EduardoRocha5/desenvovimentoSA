@@ -75,4 +75,15 @@ public class DepartamentoService {
 
         departamentoRepository.delete(dept);
     }
+
+    public Departamento buscarPorIdDepartamento(Long id) {
+        Departamento departamento = departamentoRepository.findByidDepartamento(id);
+
+        if (departamento == null) {
+            throw new IllegalArgumentException("Departamento não encontrado com ID: " + id);
+        }
+
+        return departamento;
+    }
+
 }

@@ -14,4 +14,7 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     // Deleta um departamento pelo nome e retorna o objeto removido
     Departamento deleteBynmDepartamento(String nmDepartemento);
 
+    // Busca um departamento pelo ID.
+    Departamento findByidDepartamento(Long idDepartamento);
+
 }

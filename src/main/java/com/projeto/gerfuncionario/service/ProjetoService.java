@@ -53,4 +53,9 @@ public class ProjetoService {
         return qtd + " projeto(s) excluído(s).";
     }
 
+    //  salvar projeto
+    public Projeto salvar(Projeto projeto) {
+        return projetoRepository.save(projeto);
+    }
+
 }

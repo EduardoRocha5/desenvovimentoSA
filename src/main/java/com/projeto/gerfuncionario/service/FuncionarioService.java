@@ -36,18 +36,18 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    //  Listar todos
+    // Listar todos
     public List<Funcionario> listarFuncionarios() {
         return funcionarioRepository.findAll();
     }
 
-    //  Buscar por ID
+    // Buscar por ID
     public Funcionario buscarPorId(Long id) {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
     }
 
-    //Atualizar
+    // Atualizar
     public Funcionario atualizarFuncionario(Long id, Funcionario funcionarioAtualizado) {
 
         Funcionario funcionario = buscarPorId(id);
@@ -62,5 +62,20 @@ public class FuncionarioService {
     public void deletar(Long id) {
         Funcionario funcionario = buscarPorId(id);
         funcionarioRepository.delete(funcionario);
+    }
+
+    // deletar por cpf
+    public void excluirPorCpf(String cpf) {
+
+        if (!funcionarioRepository.existsBycpfFuncionario(cpf)) {
+            throw new IllegalArgumentException("CPF não encontrado no sistema.");
+        }
+
+        funcionarioRepository.deleteBycpfFuncionario(cpf);
+    }
+
+    // buscar por nome
+    public List<Funcionario> buscarPorNome(String nome) {
+        return funcionarioRepository.findBynmFuncionario(nome);
     }
 }

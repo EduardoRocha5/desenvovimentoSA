@@ -1,4 +1,4 @@
-package com.projeto.gerfuncionario;
+package com.projeto.gerfuncionario.UnityTest;
 
 // -----------------------------------------------
 // IMPORTS NECESSÁRIOS PARA TESTE DO CONTROLLER

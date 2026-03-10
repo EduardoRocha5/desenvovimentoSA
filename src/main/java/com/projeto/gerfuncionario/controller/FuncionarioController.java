@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.projeto.gerfuncionario.model.Funcionario;
+import com.projeto.gerfuncionario.dto.FuncionarioDTO;
 import com.projeto.gerfuncionario.service.FuncionarioService;
 
 @RestController
@@ -18,9 +18,9 @@ public class FuncionarioController {
 
     // Criar funcionário
     @PostMapping
-    public ResponseEntity<?> criarFunc(@RequestBody Funcionario funcionario) {
+    public ResponseEntity<?> criarFunc(@RequestBody FuncionarioDTO dto) {
         try {
-            Funcionario salvo = funcionarioService.criarFuncionario(funcionario);
+            FuncionarioDTO salvo = funcionarioService.criarFuncionario(dto);
             return ResponseEntity.status(201).body(salvo);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao criar funcionário: " + e.getMessage());
@@ -29,7 +29,7 @@ public class FuncionarioController {
 
     // Listar todos
     @GetMapping
-    public ResponseEntity<List<Funcionario>> listarFunc() {
+    public ResponseEntity<List<FuncionarioDTO>> listarFunc() {
         return ResponseEntity.ok(funcionarioService.listarFuncionarios());
     }
 
@@ -37,7 +37,7 @@ public class FuncionarioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
-            Funcionario funcionario = funcionarioService.buscarPorId(id);
+            FuncionarioDTO funcionario = funcionarioService.buscarPorId(id);
             return ResponseEntity.ok(funcionario);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Funcionário não encontrado: " + e.getMessage());
@@ -47,7 +47,7 @@ public class FuncionarioController {
     // Buscar por nome
     @GetMapping("/nome/{nome}")
     public ResponseEntity<?> buscarPorNome(@PathVariable String nome) {
-        List<Funcionario> funcionarios = funcionarioService.buscarPorNome(nome);
+        List<FuncionarioDTO> funcionarios = funcionarioService.buscarPorNome(nome);
 
         if (funcionarios.isEmpty()) {
             return ResponseEntity.status(404).body("Nenhum funcionário encontrado com o nome: " + nome);

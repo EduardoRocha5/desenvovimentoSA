@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projeto.gerfuncionario.dto.DepartamentoDTO;
 import com.projeto.gerfuncionario.model.Departamento;
 import com.projeto.gerfuncionario.repository.DepartamentoRepository;
 
@@ -15,46 +16,60 @@ public class DepartamentoService {
     private DepartamentoRepository departamentoRepository;
 
     // Criar novo departamento
-    public Departamento criarDepartamento(Departamento departamento) {
+    public DepartamentoDTO criarDepartamento(DepartamentoDTO dto) {
 
-        // Validação: nome não pode ser nulo ou vazio
-        if (departamento.getNmDepartamento() == null || departamento.getNmDepartamento().isBlank()) {
+        if (dto.nmDepartamento() == null || dto.nmDepartamento().isBlank()) {
             throw new IllegalArgumentException("O nome do departamento é obrigatório.");
         }
 
-        // Validação: categoria não pode ser nula
-        if (departamento.getCatDepartamento() == null || departamento.getCatDepartamento().isBlank()) {
+        if (dto.catDepartamento() == null || dto.catDepartamento().isBlank()) {
             throw new IllegalArgumentException("A categoria do departamento é obrigatória.");
         }
 
-        return departamentoRepository.save(departamento);
+        Departamento departamento = toEntity(dto);
+
+        Departamento salvo = departamentoRepository.save(departamento);
+
+        return toDTO(salvo);
     }
 
-    // Listar todos os departamentos
-    public List<Departamento> listarDepartamentos() {
-        return departamentoRepository.findAll();
+    // Listar todos
+    public List<DepartamentoDTO> listarDepartamentos() {
+
+        return departamentoRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 
-    // Buscar departamento pelo nome
-    public Departamento buscarPorNome(String nome) {
-        return departamentoRepository.findBynmDepartamento(nome);
+    // Buscar por nome
+    public DepartamentoDTO buscarPorNome(String nome) {
+
+        Departamento dept = departamentoRepository.findBynmDepartamento(nome);
+
+        if (dept == null) {
+            return null;
+        }
+
+        return toDTO(dept);
     }
 
-    // Atualizar departamento
-    public Departamento atualizarDepartamento(Long id, Departamento novoDepartamento) {
+    // Atualizar
+    public DepartamentoDTO atualizarDepartamento(Long id, DepartamentoDTO dto) {
 
         Departamento existente = departamentoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Departamento não encontrado."));
 
-        // Atualiza campos
-        existente.setNmDepartamento(novoDepartamento.getNmDepartamento());
-        existente.setTelDepartamento(novoDepartamento.getTelDepartamento());
-        existente.setCatDepartamento(novoDepartamento.getCatDepartamento());
+        existente.setNmDepartamento(dto.nmDepartamento());
+        existente.setTelDepartamento(dto.telDepartamento());
+        existente.setCatDepartamento(dto.catDepartamento());
 
-        return departamentoRepository.save(existente);
+        Departamento atualizado = departamentoRepository.save(existente);
+
+        return toDTO(atualizado);
     }
 
-    // Deletar pelo ID
+    // Deletar
     public void deletarDepartamento(Long id) {
 
         if (!departamentoRepository.existsById(id)) {
@@ -64,7 +79,18 @@ public class DepartamentoService {
         departamentoRepository.deleteById(id);
     }
 
-    // Deletar pelo nome (opcional)
+    // Buscar por ID
+    public DepartamentoDTO buscarPorIdDepartamento(Long id) {
+
+        Departamento departamento = departamentoRepository.findByidDepartamento(id);
+
+        if (departamento == null) {
+            throw new IllegalArgumentException("Departamento não encontrado com ID: " + id);
+        }
+
+        return toDTO(departamento);
+    }
+
     public void deletarPorNome(String nome) {
 
         Departamento dept = departamentoRepository.findBynmDepartamento(nome);
@@ -76,14 +102,25 @@ public class DepartamentoService {
         departamentoRepository.delete(dept);
     }
 
-    public Departamento buscarPorIdDepartamento(Long id) {
-        Departamento departamento = departamentoRepository.findByidDepartamento(id);
+    // Converter DTO → Entity
+    private Departamento toEntity(DepartamentoDTO dto) {
 
-        if (departamento == null) {
-            throw new IllegalArgumentException("Departamento não encontrado com ID: " + id);
-        }
+        Departamento departamento = new Departamento();
+
+        departamento.setNmDepartamento(dto.nmDepartamento());
+        departamento.setTelDepartamento(dto.telDepartamento());
+        departamento.setCatDepartamento(dto.catDepartamento());
 
         return departamento;
     }
 
+    // Converter Entity → DTO
+    private DepartamentoDTO toDTO(Departamento departamento) {
+
+        return new DepartamentoDTO(
+                departamento.getIdDepartamento(),
+                departamento.getNmDepartamento(),
+                departamento.getTelDepartamento(),
+                departamento.getCatDepartamento());
+    }
 }

@@ -1,10 +1,12 @@
 package com.projeto.gerfuncionario.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projeto.gerfuncionario.dto.FuncionarioDTO;
 import com.projeto.gerfuncionario.model.Funcionario;
 import com.projeto.gerfuncionario.repository.FuncionarioRepository;
 
@@ -14,57 +16,76 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    // Criar funcionário (com validações manuais + do Bean Validation)
-    public Funcionario criarFuncionario(Funcionario funcionario) {
+    // Criar funcionário
+    public FuncionarioDTO criarFuncionario(FuncionarioDTO dto) {
 
-        // Regra de negócio 1: Nome não pode ser vazio
-        if (funcionario.getNmFuncionario() == null || funcionario.getNmFuncionario().isBlank()) {
+        if (dto.nmFuncionario() == null || dto.nmFuncionario().isBlank()) {
             throw new IllegalArgumentException("O nome do funcionário é obrigatório.");
         }
 
-        // Regra de negócio 2: Salário deve ser maior que zero
-        if (funcionario.getSalFuncionario() == null || funcionario.getSalFuncionario() <= 0) {
+        if (dto.salFuncionario() == null || dto.salFuncionario() <= 0) {
             throw new IllegalArgumentException("O salário deve ser maior que ZERO.");
         }
 
-        // Regra de negócio 3: CPF deve ser único
-        if (funcionarioRepository.existsBycpfFuncionario(funcionario.getCpfFuncionario())) {
+        if (funcionarioRepository.existsBycpfFuncionario(dto.cpfFuncionario())) {
             throw new IllegalArgumentException("Já existe um funcionário com este CPF.");
         }
 
-        // Salvando
-        return funcionarioRepository.save(funcionario);
+        Funcionario funcionario = toEntity(dto);
+
+        Funcionario salvo = funcionarioRepository.save(funcionario);
+
+        return toDTO(salvo);
     }
 
     // Listar todos
-    public List<Funcionario> listarFuncionarios() {
-        return funcionarioRepository.findAll();
+    public List<FuncionarioDTO> listarFuncionarios() {
+        return funcionarioRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     // Buscar por ID
-    public Funcionario buscarPorId(Long id) {
-        return funcionarioRepository.findById(id)
+    public FuncionarioDTO buscarPorId(Long id) {
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
+
+        return toDTO(funcionario);
     }
 
-    // Atualizar
-    public Funcionario atualizarFuncionario(Long id, Funcionario funcionarioAtualizado) {
+    // Atualizar funcionário
+    public FuncionarioDTO atualizarFuncionario(Long id, FuncionarioDTO dto) {
 
-        Funcionario funcionario = buscarPorId(id);
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
 
-        funcionario.setNmFuncionario(funcionarioAtualizado.getCarFuncionario());
-        funcionario.setCarFuncionario(funcionarioAtualizado.getCpfFuncionario());
-        funcionario.setSalFuncionario(funcionarioAtualizado.getSalFuncionario());
+        funcionario.setNmFuncionario(dto.nmFuncionario());
+        funcionario.setCpfFuncionario(dto.cpfFuncionario());
+        funcionario.setDtAdmissao(dto.dtAdmissao());
+        funcionario.setDtDemissao(dto.dtDemissao());
+        funcionario.setDtNascimento(dto.dtNascimento());
+        funcionario.setEndFuncionario(dto.endFuncionario());
+        funcionario.setSalFuncionario(dto.salFuncionario());
+        funcionario.setGenFuncionario(dto.genFuncionario());
+        funcionario.setCarFuncionario(dto.carFuncionario());
 
-        return criarFuncionario(funcionario); // reaproveita validações
+        Funcionario atualizado = funcionarioRepository.save(funcionario);
+
+        return toDTO(atualizado);
     }
 
+    // Deletar por ID
     public void deletar(Long id) {
-        Funcionario funcionario = buscarPorId(id);
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
+
         funcionarioRepository.delete(funcionario);
     }
 
-    // deletar por cpf
+    // Deletar por CPF
     public void excluirPorCpf(String cpf) {
 
         if (!funcionarioRepository.existsBycpfFuncionario(cpf)) {
@@ -74,8 +95,49 @@ public class FuncionarioService {
         funcionarioRepository.deleteBycpfFuncionario(cpf);
     }
 
-    // buscar por nome
-    public List<Funcionario> buscarPorNome(String nome) {
-        return funcionarioRepository.findBynmFuncionario(nome);
+    // Buscar por nome
+    public List<FuncionarioDTO> buscarPorNome(String nome) {
+
+        return funcionarioRepository.findBynmFuncionario(nome)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Converter Entity → DTO
+    private FuncionarioDTO toDTO(Funcionario funcionario) {
+
+        return new FuncionarioDTO(
+                funcionario.getIdFuncionario(),
+                funcionario.getNmFuncionario(),
+                funcionario.getCpfFuncionario(),
+                funcionario.getDtAdmissao(),
+                funcionario.getDtDemissao(),
+                funcionario.getDtNascimento(),
+                funcionario.getEndFuncionario(),
+                funcionario.getSalFuncionario(),
+                funcionario.getGenFuncionario(),
+                funcionario.getCarFuncionario(),
+                funcionario.getDepartamento() != null ? funcionario.getDepartamento().getIdDepartamento() : null,
+                funcionario.getProjeto() != null ? funcionario.getProjeto().getIdProjeto() : null);
+    }
+
+    // Converter DTO → Entity
+    private Funcionario toEntity(FuncionarioDTO dto) {
+
+        Funcionario funcionario = new Funcionario();
+
+        funcionario.setIdFuncionario(dto.idFuncionario());
+        funcionario.setNmFuncionario(dto.nmFuncionario());
+        funcionario.setCpfFuncionario(dto.cpfFuncionario());
+        funcionario.setDtAdmissao(dto.dtAdmissao());
+        funcionario.setDtDemissao(dto.dtDemissao());
+        funcionario.setDtNascimento(dto.dtNascimento());
+        funcionario.setEndFuncionario(dto.endFuncionario());
+        funcionario.setSalFuncionario(dto.salFuncionario());
+        funcionario.setGenFuncionario(dto.genFuncionario());
+        funcionario.setCarFuncionario(dto.carFuncionario());
+
+        return funcionario;
     }
 }

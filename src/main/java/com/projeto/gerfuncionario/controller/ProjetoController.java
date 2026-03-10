@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.projeto.gerfuncionario.model.Projeto;
+import com.projeto.gerfuncionario.dto.ProjetoDTO;
 import com.projeto.gerfuncionario.service.ProjetoService;
 
 @RestController
@@ -18,40 +18,51 @@ public class ProjetoController {
 
     // Criar projeto
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody Projeto projeto) {
-        Projeto novo = projetoService.salvar(projeto);
+    public ResponseEntity<ProjetoDTO> criar(@RequestBody ProjetoDTO dto) {
+
+        ProjetoDTO novo = projetoService.salvar(dto);
+
         return ResponseEntity.status(201).body(novo);
     }
 
     // Listar todos os projetos
     @GetMapping
-    public ResponseEntity<List<Projeto>> listarTodos() {
-        return ResponseEntity.ok(projetoService.exibirTodosProjetos());
+    public ResponseEntity<List<ProjetoDTO>> listarTodos() {
+
+        List<ProjetoDTO> projetos = projetoService.exibirTodosProjetos();
+
+        return ResponseEntity.ok(projetos);
     }
 
-    // Buscar por nome
+    // Buscar projeto por nome
     @GetMapping("/nome/{nome}")
     public ResponseEntity<?> buscarPorNome(@PathVariable String nome) {
-        List<Projeto> projetos = projetoService.exibirPorNome(nome);
+
+        List<ProjetoDTO> projetos = projetoService.exibirPorNome(nome);
 
         if (projetos.isEmpty()) {
-            return ResponseEntity.status(404).body("Nenhum projeto encontrado com o nome: " + nome);
+            return ResponseEntity.status(404)
+                    .body("Nenhum projeto encontrado com o nome: " + nome);
         }
 
         return ResponseEntity.ok(projetos);
     }
 
-    // Mostrar o status de um projeto
+    // Mostrar status do projeto
     @GetMapping("/status/{nomeProjeto}")
     public ResponseEntity<String> statusProjeto(@PathVariable String nomeProjeto) {
-        String resposta = projetoService.stsProjeto(nomeProjeto);
-        return ResponseEntity.ok(resposta);
+
+        String status = projetoService.stsProjeto(nomeProjeto);
+
+        return ResponseEntity.ok(status);
     }
 
-    // Excluir por nome
+    // Excluir projeto por nome
     @DeleteMapping("/{nome}")
     public ResponseEntity<String> excluir(@PathVariable String nome) {
+
         String resultado = projetoService.excluirProjeto(nome);
+
         return ResponseEntity.ok(resultado);
     }
 }

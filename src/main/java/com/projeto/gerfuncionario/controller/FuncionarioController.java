@@ -66,4 +66,11 @@ public class FuncionarioController {
             return ResponseEntity.badRequest().body("Erro ao excluir: " + e.getMessage());
         }
     }
+
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> excluirPorId(@PathVariable Long id) {
+        String resultado = funcionarioService.excluirPorId(id);
+        return ResponseEntity.ok(resultado);
+
+    }
 }

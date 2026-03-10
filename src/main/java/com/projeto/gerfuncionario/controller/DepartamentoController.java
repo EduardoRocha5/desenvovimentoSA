@@ -67,15 +67,14 @@ public class DepartamentoController {
     }
 
     // Deletar por ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarID(@PathVariable Long id) {
-        try {
-            departamentoService.deletarDepartamento(id);
-            return ResponseEntity.ok("Departamento deletado com sucesso!"); // 200 OK
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
-        }
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> excluirPorId(@PathVariable Long id) {
+        String resultado = departamentoService.excluirPorId(id);
+        return ResponseEntity.ok(resultado);
+
     }
+
+    
 
     // Deletar por nome
     @DeleteMapping("/nome/{nome}")

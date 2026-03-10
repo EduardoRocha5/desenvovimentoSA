@@ -77,12 +77,13 @@ public class FuncionarioService {
     }
 
     // Deletar por ID
-    public void deletar(Long id) {
-
-        Funcionario funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
-
-        funcionarioRepository.delete(funcionario);
+    public String excluirPorId(Long id) {
+        if (funcionarioRepository.existsById(id)) {
+            funcionarioRepository.deleteById(id);
+            return "Projeto excluído com sucesso.";
+        } else {
+            return "Projeto não encontrado.";
+        }
     }
 
     // Deletar por CPF

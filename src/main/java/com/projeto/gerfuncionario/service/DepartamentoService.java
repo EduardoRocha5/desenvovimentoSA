@@ -70,13 +70,13 @@ public class DepartamentoService {
     }
 
     // Deletar
-    public void deletarDepartamento(Long id) {
-
-        if (!departamentoRepository.existsById(id)) {
-            throw new IllegalArgumentException("Departamento não encontrado para exclusão.");
+    public String excluirPorId(Long id) {
+        if (departamentoRepository.existsById(id)) {
+            departamentoRepository.deleteById(id);
+            return "Projeto excluído com sucesso.";
+        } else {
+            return "Projeto não encontrado.";
         }
-
-        departamentoRepository.deleteById(id);
     }
 
     // Buscar por ID

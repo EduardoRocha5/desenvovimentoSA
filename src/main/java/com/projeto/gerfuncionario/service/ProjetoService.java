@@ -77,6 +77,18 @@ public class ProjetoService {
     }
 
     // --------------------------------
+    // EXCLUIR POR ID
+    // --------------------------------
+    public String excluirPorId(Long id) {
+        if (projetoRepository.existsById(id)) {
+            projetoRepository.deleteById(id);
+            return "Projeto excluído com sucesso.";
+        } else {
+            return "Projeto não encontrado.";
+        }
+    }
+
+    // --------------------------------
     // VALIDA DELETE
     // --------------------------------
     private String validarDelete(long qtd) {

@@ -65,4 +65,11 @@ public class ProjetoController {
 
         return ResponseEntity.ok(resultado);
     }
+
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> excluirPorId(@PathVariable Long id) {
+        String resultado = projetoService.excluirPorId(id);
+        return ResponseEntity.ok(resultado);
+        
+    }
 }

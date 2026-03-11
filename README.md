@@ -1,3 +1,8 @@
+# Sistema de Gerenciamento de Funcionários
+
+API desenvolvida em **Java com Spring Boot** para gerenciamento de funcionários, departamentos e projetos.  
+O sistema permite cadastrar, consultar, atualizar e excluir dados relacionados aos colaboradores e suas atividades na empresa.
+
 ## 📁 Estrutura do Projeto
 
 O repositório do projeto está organizado da seguinte forma:

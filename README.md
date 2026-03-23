@@ -166,6 +166,3 @@ Exclui projeto pelo nome.
 
 ---
 
-## 🚀 Autor
-Projeto desenvolvido para estudo de Spring Boot + API REST.
-

@@ -10,7 +10,10 @@ import com.projeto.gerfuncionario.dto.ProjetoDTO;
 import com.projeto.gerfuncionario.model.Projeto;
 import com.projeto.gerfuncionario.repository.ProjetoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class ProjetoService {
 
     @Autowired

@@ -57,14 +57,6 @@ public class ProjetoController {
         return ResponseEntity.ok(status);
     }
 
-    // Excluir projeto por nome
-    @DeleteMapping("/{nome}")
-    public ResponseEntity<String> excluir(@PathVariable String nome) {
-
-        String resultado = projetoService.excluirProjeto(nome);
-
-        return ResponseEntity.ok(resultado);
-    }
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<String> excluirPorId(@PathVariable Long id) {

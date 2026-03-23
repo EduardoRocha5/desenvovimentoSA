@@ -18,12 +18,12 @@ public class DepartamentoController {
 
     // Criar departamento
     @PostMapping
-    public ResponseEntity<DepartamentoDTO> criarDep(@RequestBody DepartamentoDTO dto) {
+    public ResponseEntity<?> criarDep(@RequestBody DepartamentoDTO dto) {
         try {
             DepartamentoDTO novo = departamentoService.criarDepartamento(dto);
             return ResponseEntity.status(201).body(novo); // 201 Created
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build(); // 400 Bad Request
+            return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
         }
     }
 
@@ -74,16 +74,5 @@ public class DepartamentoController {
 
     }
 
-    
 
-    // Deletar por nome
-    @DeleteMapping("/nome/{nome}")
-    public ResponseEntity<?> deletarPorNome(@PathVariable String nome) {
-        try {
-            departamentoService.deletarPorNome(nome);
-            return ResponseEntity.ok("Departamento deletado com sucesso!");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

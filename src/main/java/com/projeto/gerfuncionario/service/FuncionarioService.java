@@ -7,11 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projeto.gerfuncionario.dto.FuncionarioDTO;
+import com.projeto.gerfuncionario.model.Departamento;
 import com.projeto.gerfuncionario.model.Funcionario;
+import com.projeto.gerfuncionario.model.Projeto;
+import com.projeto.gerfuncionario.repository.DepartamentoRepository;
 import com.projeto.gerfuncionario.repository.FuncionarioRepository;
+import com.projeto.gerfuncionario.repository.ProjetoRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class FuncionarioService {
+
+    @Autowired
+    private ProjetoRepository projetoRepository ;
+
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
@@ -138,6 +151,21 @@ public class FuncionarioService {
         funcionario.setSalFuncionario(dto.salFuncionario());
         funcionario.setGenFuncionario(dto.genFuncionario());
         funcionario.setCarFuncionario(dto.carFuncionario());
+
+        // 🔥 AQUI ESTAVA FALTANDO
+        if (dto.idDepartamento() != null) {
+            Departamento departamento = departamentoRepository.findById(dto.idDepartamento())
+                    .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
+
+            funcionario.setDepartamento(departamento);
+        }
+
+        if (dto.idProjeto() != null) {
+            Projeto projeto = projetoRepository.findById(dto.idProjeto())
+                    .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+
+            funcionario.setProjeto(projeto);
+        }
 
         return funcionario;
     }

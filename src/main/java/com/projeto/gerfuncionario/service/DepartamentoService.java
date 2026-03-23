@@ -9,7 +9,10 @@ import com.projeto.gerfuncionario.dto.DepartamentoDTO;
 import com.projeto.gerfuncionario.model.Departamento;
 import com.projeto.gerfuncionario.repository.DepartamentoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class DepartamentoService {
 
     @Autowired
@@ -73,11 +76,12 @@ public class DepartamentoService {
     public String excluirPorId(Long id) {
         if (departamentoRepository.existsById(id)) {
             departamentoRepository.deleteById(id);
-            return "Projeto excluído com sucesso.";
+            return "Departamento excluído com sucesso.";
         } else {
-            return "Projeto não encontrado.";
+            return "Departamento não encontrado.";
         }
     }
+    
 
     // Buscar por ID
     public DepartamentoDTO buscarPorIdDepartamento(Long id) {

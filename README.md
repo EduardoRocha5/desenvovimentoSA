@@ -162,3 +162,65 @@ Exclui projeto pelo nome.
 
 ---
 
+
+---
+
+## ⚙️ Instalação
+
+### 🔹 1. Clonar o repositório
+
+1. **Clone o repositório:**
+```bash
+git clone https://github.com/EduardoRocha5/desenvovimentoSA.git
+cd desenvovimentoSA
+```
+
+2. **Configure o banco de dados:**
+
+Crie o banco no MySQL:
+```sql
+CREATE DATABASE gerfuncionario;
+```
+
+Edite o arquivo `src/main/resources/application.properties` com suas credenciais:
+```properties
+
+spring.application.name=gerfuncionario
+spring.datasource.url=jdbc:mysql://localhost:3306/gerfuncionario?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+```
+
+3. **Instale as dependências:**
+```bash
+mvn clean install
+```
+
+---
+
+## ▶️ Execução
+
+Para executar o projeto, siga os passos abaixo:
+
+1. **Inicie a aplicação:**
+```bash
+mvn spring-boot:run
+```
+
+A API estará disponível em: `http://localhost:8080`
+
+---
+
+## ✨ Funcionalidades
+
+- **Gerenciamento de Departamentos**: Criação, listagem, busca por nome, atualização e exclusão de departamentos. Inclui validações de nome e categoria obrigatórios.
+- **Gerenciamento de Funcionários**: Cadastro com validação de CPF duplicado e salário, listagem, busca por ID ou nome, atualização e exclusão por ID ou CPF. Vincula automaticamente o funcionário a um departamento e projeto existentes.
+- **Gerenciamento de Projetos**: Criação, listagem, busca por nome, consulta de status e exclusão por nome ou ID.
+
+---
+
+

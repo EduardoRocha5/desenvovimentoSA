@@ -14,11 +14,7 @@ O repositório do projeto está organizado da seguinte forma:
   - **model/** : Classes que representam as entidades do sistema (Funcionário, Departamento e Projeto).
   - **dto/** : Objetos de transferência de dados utilizados na comunicação da API.
 
-- **docs/** : Documentação do projeto, como diagramas e explicações da arquitetura.
-
 - **tests/** : Testes unitários e de integração utilizados para validar o funcionamento da aplicação.
-
-- **scripts/** : Scripts auxiliares para configuração ou execução do projeto.
 
 # 📘 API - Gerenciamento de Funcionários
 

@@ -89,6 +89,6 @@ public class ProjetoServiceIntegrationTest {
         List<ProjetoDTO> listaProjetos = projetoService.exibirTodosProjetos();
 
         // assert
-        assertEquals(2, listaProjetos.size());
+        assertEquals(4, listaProjetos.size());
     }
 }

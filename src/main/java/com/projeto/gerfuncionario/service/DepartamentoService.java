@@ -63,9 +63,14 @@ public class DepartamentoService {
         Departamento existente = departamentoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Departamento não encontrado."));
 
-        existente.setNmDepartamento(dto.nmDepartamento());
-        existente.setTelDepartamento(dto.telDepartamento());
-        existente.setCatDepartamento(dto.catDepartamento());
+        if (dto.nmDepartamento() != null && !dto.nmDepartamento().isBlank())
+            existente.setNmDepartamento(dto.nmDepartamento());
+
+        if(dto.telDepartamento() != null && !dto.telDepartamento().isBlank())
+            existente.setTelDepartamento(dto.telDepartamento());
+
+        if(dto.catDepartamento() != null && !dto.catDepartamento().isBlank())
+            existente.setCatDepartamento(dto.catDepartamento());
 
         Departamento atualizado = departamentoRepository.save(existente);
 

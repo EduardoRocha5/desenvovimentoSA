@@ -93,9 +93,9 @@ public class FuncionarioService {
     public String excluirPorId(Long id) {
         if (funcionarioRepository.existsById(id)) {
             funcionarioRepository.deleteById(id);
-            return "Projeto excluído com sucesso.";
+            return "Funcionario excluído com sucesso.";
         } else {
-            return "Projeto não encontrado.";
+            return "Funcionario não encontrado.";
         }
     }
 
@@ -152,7 +152,7 @@ public class FuncionarioService {
         funcionario.setGenFuncionario(dto.genFuncionario());
         funcionario.setCarFuncionario(dto.carFuncionario());
 
-        // 🔥 AQUI ESTAVA FALTANDO
+        // AQUI ESTAVA FALTANDO
         if (dto.idDepartamento() != null) {
             Departamento departamento = departamentoRepository.findById(dto.idDepartamento())
                     .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));

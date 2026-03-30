@@ -9,6 +9,7 @@ public class GerfuncionarioApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GerfuncionarioApplication.class, args);
 		System.out.println("Sistema Iniciado!");
+		System.out.println("Sistema Iniciado! Render ");
 		System.out.println("Acesse: http://localhost:8080");
 	}
 
